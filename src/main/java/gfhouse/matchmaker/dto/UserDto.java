@@ -11,7 +11,7 @@ public class UserDto {
     private final String email;
 
     @Builder
-    public UserDto(User user){
+    public UserDto(User user) {
         this.nickname = user.getNickname();
         this.password = user.getPassword();
         this.email = user.getEmail();
