@@ -16,8 +16,12 @@ public class User {
     private Long id;
 
     @Column(unique = true)
-    private String username;
+    private String userId;
 
+    @Column(unique = true)
+    private String nickname;
+
+    @Column
     private String password;
 
     @Column(unique = true)

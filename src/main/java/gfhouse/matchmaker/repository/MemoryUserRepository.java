@@ -11,8 +11,8 @@ public class MemoryUserRepository implements UserRepository{
 
     @Override
     public User save(User user) {
-        user.setIdx(++sequence);
-        store.put(user.getIdx(), user);
+        user.setId(++sequence);
+        store.put(user.getId(), user);
         return user;
     }
 
@@ -34,11 +34,6 @@ public class MemoryUserRepository implements UserRepository{
     @Override
     public Optional<User> findByPassword(String password) {
         return store.values().stream().filter(user -> user.getPassword().equals(password)).findAny();
-    }
-
-    @Override
-    public Optional<User> findByScore(Short score) {
-        return store.values().stream().filter(user -> user.getScore().equals(score)).findAny();
     }
 
     @Override
