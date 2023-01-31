@@ -19,7 +19,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public User signup(@RequestBody UserDto userDto) {
-        return userService.create(userDto.getNickname(), userDto.getEmail(), userDto.getPassword());
+    public User signup(@RequestBody UserDto userDto){
+        return userService.create(userDto.getUserId(), userDto.getNickname(), userDto.getEmail(), userDto.getPassword());
     }
 }
