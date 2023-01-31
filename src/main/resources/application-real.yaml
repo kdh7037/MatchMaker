@@ -1,0 +1,25 @@
+spring:
+  config:
+    activate:
+      on-profile: real
+    import: vault://match_maker/data
+
+  datasource:
+    url: jdbc:mysql://192.168.200.119:13306/match_maker
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  cloud:
+    vault:
+      enabled: true
+      host: 192.168.200.119
+      port: 18200
+      scheme: http
+      authentication: token
+      token: # env args
+      uri: http://192.168.200.119:18200
+      connection-timeout: 5000
+      read-timeout: 1500
+
+  jpa:
+    hibernate:
+      ddl-auto: none
