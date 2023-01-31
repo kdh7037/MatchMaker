@@ -10,8 +10,9 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
 
-    public User create(String nickname, String email, String password){
+    public User create(String userId, String nickname, String email, String password){
         User user = new User();
+        user.setUserId(userId);
         user.setNickname(nickname);
         user.setEmail(email);
         user.setPassword(password);
