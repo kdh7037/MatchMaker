@@ -6,12 +6,6 @@ import lombok.Data;
 
 @Data
 public class LoginDto {
-    private final String nickname;
-    private final String password;
-
-    @Builder
-    public LoginDto(User user){
-        this.nickname = user.getNickname();
-        this.password = user.getPassword();
-    }
+    private String userId;
+    private String password;
 }
