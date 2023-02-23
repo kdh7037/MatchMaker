@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,14 +26,19 @@ public class Diary extends EntityAudit {
     private Long hates;
 
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL ,orphanRemoval = true)
-    private List<Comment> comments;
+    private List<Comment> comments = Collections.emptyList();
 
     @Builder
-    public Diary(String title, String author, String contents, Long likes, Long hates) {
+    public Diary(String title, String author, String contents) {
         this.title = title;
         this.author = author;
         this.contents = contents;
-        this.likes = likes;
-        this.hates = hates;
+        this.likes = 0L;
+        this.hates = 0L;
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+        comment.setDiary(this);
     }
 }

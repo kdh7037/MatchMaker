@@ -28,4 +28,8 @@ public class Comment extends EntityAudit {
         this.author = author;
         this.contents = contents;
     }
+
+    public void setDiary(Diary diary) {
+        this.diary = diary;
+    }
 }
