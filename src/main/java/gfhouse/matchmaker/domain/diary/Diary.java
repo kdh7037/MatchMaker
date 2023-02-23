@@ -24,7 +24,7 @@ public class Diary extends EntityAudit {
     private Long likes;
     private Long hates;
 
-    @OneToMany(mappedBy = "diary")
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL ,orphanRemoval = true)
     private List<Comment> comments;
 
     @Builder
