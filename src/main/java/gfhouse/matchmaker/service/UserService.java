@@ -13,7 +13,7 @@ public class UserService {
 
     public UserView create(String userId, String nickname, String email, String password){
         User user = new User();
-        user.setUser_id(userId);
+        user.setUserId(userId);
         user.setNickname(nickname);
         user.setEmail(email);
         user.setPassword(password);
