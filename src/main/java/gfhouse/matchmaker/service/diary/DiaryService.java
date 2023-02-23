@@ -4,11 +4,13 @@ import gfhouse.matchmaker.domain.diary.Comment;
 import gfhouse.matchmaker.domain.diary.Diary;
 import gfhouse.matchmaker.repository.diary.CommentRepository;
 import gfhouse.matchmaker.repository.diary.DiaryRepository;
+import gfhouse.matchmaker.view.diary.DiaryView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class DiaryService {
 
@@ -53,5 +55,11 @@ public class DiaryService {
         commentRepository.deleteByDiary_IdAndId(diaryId, commentId);
 
         return "ok";
+    }
+
+    public DiaryView getDiaryView(Long diaryId) {
+        Diary diary = diaryRepository.findFetchById(diaryId).orElseThrow();
+
+        return DiaryView.of(diary, diary.getComments());
     }
 }

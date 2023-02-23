@@ -1,6 +1,7 @@
 package gfhouse.matchmaker.controller.diary;
 
 import gfhouse.matchmaker.service.diary.DiaryService;
+import gfhouse.matchmaker.view.diary.DiaryView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -34,5 +35,10 @@ public class DiaryController {
     @DeleteMapping("/{diaryId}/comments/{commentId}")
     public String deleteComment(@PathVariable Long diaryId, @PathVariable Long commentId) {
         return diaryService.deleteComment(diaryId, commentId);
+    }
+
+    @GetMapping("/{diaryId}")
+    public DiaryView getDiary(@PathVariable Long diaryId) {
+        return diaryService.getDiaryView(diaryId);
     }
 }
