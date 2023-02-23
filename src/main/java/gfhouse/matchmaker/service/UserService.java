@@ -13,10 +13,11 @@ public class UserService {
 
     public UserView create(String userId, String nickname, String email, String password){
         User user = new User();
-        user.setUserId(userId);
+        user.setUser_id(userId);
         user.setNickname(nickname);
         user.setEmail(email);
         user.setPassword(password);
+        user.setScore(1500);
         this.userRepository.save(user);
 
         UserView userView = new UserView();

@@ -16,7 +16,7 @@ public class User {
     private Long id;
 
     @Column(unique = true)
-    private String userId;
+    private String user_id;
 
     @Column(unique = true)
     private String nickname;
