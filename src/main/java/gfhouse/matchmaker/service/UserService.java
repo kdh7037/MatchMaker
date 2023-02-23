@@ -17,6 +17,7 @@ public class UserService {
         user.setNickname(nickname);
         user.setEmail(email);
         user.setPassword(password);
+        user.setScore(1500);
         this.userRepository.save(user);
 
         UserView userView = new UserView();
