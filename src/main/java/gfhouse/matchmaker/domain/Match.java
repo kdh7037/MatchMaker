@@ -14,10 +14,14 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn
-    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user1_id")
+    private User user1;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user2_id")
+    private User user2;
+/*
     @Column
     private String player1Nickname;
 
@@ -29,10 +33,10 @@ public class Match {
 
     @Column
     private Integer player2Score;
-
+*/
     @Column
     private String roomNumber;
 
-    @Column
-    private Short status;
+    @Column // 0:매칭 전 1:대전 중 2:대전 종료
+    private Character status;
 }

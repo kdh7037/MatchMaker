@@ -10,5 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 public class MatchSimpleView {
-    private List<MatchSimpleDto> matchSimpleList;
+    private List<MatchSimpleInfoView> matchSimpleInfos;
 }
+
