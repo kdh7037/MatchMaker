@@ -19,6 +19,8 @@ public class Diary extends EntityAudit {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long userId;
+
     private String title;
     private String author;
     private String contents;
@@ -27,7 +29,8 @@ public class Diary extends EntityAudit {
     private List<Comment> comments = Collections.emptyList();
 
     @Builder
-    public Diary(String title, String author, String contents) {
+    public Diary(Long userId, String title, String author, String contents) {
+        this.userId = userId;
         this.title = title;
         this.author = author;
         this.contents = contents;

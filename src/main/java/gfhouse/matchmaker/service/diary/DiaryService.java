@@ -1,13 +1,16 @@
 package gfhouse.matchmaker.service.diary;
 
+import gfhouse.matchmaker.domain.User;
 import gfhouse.matchmaker.domain.diary.Comment;
 import gfhouse.matchmaker.domain.diary.Diary;
 import gfhouse.matchmaker.domain.diary.DiaryLikes;
+import gfhouse.matchmaker.repository.UserRepository;
 import gfhouse.matchmaker.repository.diary.CommentRepository;
 import gfhouse.matchmaker.repository.diary.DiaryLikesRepository;
 import gfhouse.matchmaker.repository.diary.DiaryRepository;
 import gfhouse.matchmaker.view.diary.CommentView;
 import gfhouse.matchmaker.view.diary.DiaryView;
+import gfhouse.matchmaker.view.diary.SimpleDiaryView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,25 +25,34 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final CommentRepository commentRepository;
     private final DiaryLikesRepository diaryLikesRepository;
+    private final UserRepository userRepository;
 
     @Transactional
-    public String saveDiary(String author, String contents, String title) {
+    public SimpleDiaryView saveDiary(Long userId, String contents, String title) {
+        User user = userRepository.findById(userId).orElseThrow();
         Diary diary = Diary.builder()
-                .author(author)
+                .userId(user.getId())
+                .author(user.getNickname())
                 .contents(contents)
                 .title(title)
                 .build();
 
-        diaryRepository.save(diary);
-
-        return "ok";
+        Diary saved = diaryRepository.save(diary);
+        return SimpleDiaryView.of(saved);
     }
 
     @Transactional
-    public String deleteDiary(Long diaryId) {
+    public Boolean deleteDiary(Long diaryId, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        Diary diary = diaryRepository.findById(diaryId).orElseThrow();
+
+        if (!diary.getUserId().equals(user.getId())) {
+            throw new IllegalArgumentException("플레이어 일기의 작성자만 일기를 삭제할 수 있습니다.");
+        }
+
         diaryRepository.deleteById(diaryId);
 
-        return "ok";
+        return true;
     }
 
     @Transactional
