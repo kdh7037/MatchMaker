@@ -3,9 +3,11 @@ package gfhouse.matchmaker.service.diary;
 import gfhouse.matchmaker.domain.User;
 import gfhouse.matchmaker.domain.diary.Comment;
 import gfhouse.matchmaker.domain.diary.Diary;
+import gfhouse.matchmaker.domain.diary.DiaryHates;
 import gfhouse.matchmaker.domain.diary.DiaryLikes;
 import gfhouse.matchmaker.repository.UserRepository;
 import gfhouse.matchmaker.repository.diary.CommentRepository;
+import gfhouse.matchmaker.repository.diary.DiaryHatesRepository;
 import gfhouse.matchmaker.repository.diary.DiaryLikesRepository;
 import gfhouse.matchmaker.repository.diary.DiaryRepository;
 import gfhouse.matchmaker.view.diary.CommentView;
@@ -26,6 +28,7 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final CommentRepository commentRepository;
     private final DiaryLikesRepository diaryLikesRepository;
+    private final DiaryHatesRepository diaryHatesRepository;
     private final UserRepository userRepository;
 
     @Transactional
@@ -129,6 +132,17 @@ public class DiaryService {
                 .build();
 
         diaryLikesRepository.save(diaryLikes);
+        return true;
+    }
+
+    @Transactional
+    public boolean hateDiary(Long diaryId, Long userId) {
+        boolean present = diaryHatesRepository.findByDiaryId(diaryId).isPresent();
+        if (present) return false;
+
+        DiaryHates hates = DiaryHates.builder().diaryId(diaryId).userId(userId).build();
+        diaryHatesRepository.save(hates);
+
         return true;
     }
 }

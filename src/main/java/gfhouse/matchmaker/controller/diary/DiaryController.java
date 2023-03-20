@@ -71,4 +71,11 @@ public class DiaryController {
         boolean result = diaryService.likeDiary(diaryId, userId);
         return BooleanView.of(result);
     }
+
+    @Operation(summary = "플레이어 일기 싫어요")
+    @PostMapping("/hates")
+    public BooleanView hateDiary(@RequestParam Long diaryId, @RequestParam Long userId) {
+        boolean result = diaryService.hateDiary(diaryId, userId);
+        return BooleanView.of(result);
+    }
 }
