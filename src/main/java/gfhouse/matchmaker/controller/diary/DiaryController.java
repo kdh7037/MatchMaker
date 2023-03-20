@@ -1,6 +1,7 @@
 package gfhouse.matchmaker.controller.diary;
 
 import gfhouse.matchmaker.service.diary.DiaryService;
+import gfhouse.matchmaker.view.BooleanView;
 import gfhouse.matchmaker.view.diary.DiaryView;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -52,7 +53,14 @@ public class DiaryController {
 
     @Operation(summary = "플레이어 일기 조회")
     @GetMapping("/{diaryId}")
-    public DiaryView getDiary(@Parameter(description = "일기ID") @PathVariable Long diaryId) {
-        return diaryService.getDiaryView(diaryId);
+    public DiaryView getDiary(@Parameter(description = "일기ID") @PathVariable Long diaryId, @RequestParam Long userId) {
+        return diaryService.getDiaryView(diaryId, userId);
+    }
+
+    @Operation(summary = "플레이어 일기 좋아요")
+    @PostMapping("/likes")
+    public BooleanView likeDiary(@RequestParam Long diaryId, @RequestParam Long userId) {
+        boolean result = diaryService.likeDiary(diaryId, userId);
+        return BooleanView.of(result);
     }
 }

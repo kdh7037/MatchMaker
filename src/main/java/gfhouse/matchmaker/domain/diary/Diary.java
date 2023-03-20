@@ -22,8 +22,6 @@ public class Diary extends EntityAudit {
     private String title;
     private String author;
     private String contents;
-    private Long likes;
-    private Long hates;
 
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL ,orphanRemoval = true)
     private List<Comment> comments = Collections.emptyList();
@@ -33,8 +31,6 @@ public class Diary extends EntityAudit {
         this.title = title;
         this.author = author;
         this.contents = contents;
-        this.likes = 0L;
-        this.hates = 0L;
     }
 
     public void addComment(Comment comment) {
