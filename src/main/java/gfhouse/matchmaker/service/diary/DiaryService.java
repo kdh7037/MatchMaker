@@ -99,9 +99,10 @@ public class DiaryService {
         }
     }
 
-    public DiaryView getDiaryView(Long diaryId,  Long userId) {
+    public DiaryView getDiaryView(Long diaryId) {
         Diary diary = diaryRepository.findFetchById(diaryId).orElseThrow();
-        Long likes = getLikes(userId);
+        Long likes = diaryLikesRepository.countByDiaryId(diaryId).orElse(0L);
+        Long hates = diaryHatesRepository.countByDiaryId(diaryId).orElse(0L);
         List<CommentView> commentViews = diary.getComments().stream().map(CommentView::of).toList();
 
         return DiaryView.builder()
@@ -111,14 +112,9 @@ public class DiaryService {
                 .contents(diary.getContents())
                 .createdAt(diary.getCreatedAt())
                 .likes(likes)
+                .hates(hates)
                 .comments(commentViews)
                 .build();
-    }
-
-    private Long getLikes(Long userId) {
-        if (userId == null) return 0L;
-
-        return diaryLikesRepository.countByUserId(userId);
     }
 
     @Transactional

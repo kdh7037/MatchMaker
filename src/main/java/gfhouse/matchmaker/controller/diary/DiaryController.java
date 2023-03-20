@@ -61,8 +61,8 @@ public class DiaryController {
 
     @Operation(summary = "플레이어 일기 조회")
     @GetMapping("/{diaryId}")
-    public DiaryView getDiary(@Parameter(description = "일기ID") @PathVariable Long diaryId, @RequestParam Long userId) {
-        return diaryService.getDiaryView(diaryId, userId);
+    public DiaryView getDiary(@Parameter(description = "일기ID") @PathVariable Long diaryId) {
+        return diaryService.getDiaryView(diaryId);
     }
 
     @Operation(summary = "플레이어 일기 좋아요")

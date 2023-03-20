@@ -29,6 +29,9 @@ public class DiaryView {
     @Schema(description = "좋아요 수")
     private Long likes;
 
+    @Schema(description = "싫어요 수")
+    private Long hates;
+
     @Schema(description = "작성일자")
     private LocalDateTime createdAt;
 

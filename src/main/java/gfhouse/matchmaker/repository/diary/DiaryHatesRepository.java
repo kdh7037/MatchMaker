@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface DiaryHatesRepository extends JpaRepository<DiaryHates, Long> {
     Optional<DiaryHates> findByDiaryId(Long diaryId);
+
+    Optional<Long> countByDiaryId(Long diaryId);
 }
