@@ -15,6 +15,8 @@ import gfhouse.matchmaker.view.diary.DiaryView;
 import gfhouse.matchmaker.view.diary.SimpleCommentView;
 import gfhouse.matchmaker.view.diary.SimpleDiaryView;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -140,5 +142,9 @@ public class DiaryService {
         diaryHatesRepository.save(hates);
 
         return true;
+    }
+
+    public Page<SimpleDiaryView> getDiaries(Integer page, Integer size) {
+        return diaryRepository.findAll(PageRequest.of(page, size)).map(SimpleDiaryView::of);
     }
 }

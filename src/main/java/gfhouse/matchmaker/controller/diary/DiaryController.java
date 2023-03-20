@@ -2,6 +2,7 @@ package gfhouse.matchmaker.controller.diary;
 
 import gfhouse.matchmaker.service.diary.DiaryService;
 import gfhouse.matchmaker.view.BooleanView;
+import gfhouse.matchmaker.view.PageView;
 import gfhouse.matchmaker.view.diary.DiaryView;
 import gfhouse.matchmaker.view.diary.SimpleCommentView;
 import gfhouse.matchmaker.view.diary.SimpleDiaryView;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "플레이어 일기")
@@ -77,5 +79,15 @@ public class DiaryController {
     public BooleanView hateDiary(@RequestParam Long diaryId, @RequestParam Long userId) {
         boolean result = diaryService.hateDiary(diaryId, userId);
         return BooleanView.of(result);
+    }
+
+    @Operation(summary = "플레이어 일기 목록")
+    @GetMapping
+    public PageView<SimpleDiaryView> getDiaries(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size
+    ) {
+        Page<SimpleDiaryView> diaries = diaryService.getDiaries(page, size);
+        return PageView.of(diaries);
     }
 }
