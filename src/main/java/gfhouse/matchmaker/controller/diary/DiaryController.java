@@ -3,6 +3,7 @@ package gfhouse.matchmaker.controller.diary;
 import gfhouse.matchmaker.service.diary.DiaryService;
 import gfhouse.matchmaker.view.BooleanView;
 import gfhouse.matchmaker.view.diary.DiaryView;
+import gfhouse.matchmaker.view.diary.SimpleCommentView;
 import gfhouse.matchmaker.view.diary.SimpleDiaryView;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -39,21 +40,23 @@ public class DiaryController {
 
     @Operation(summary = "플레이어 일기 댓글 작성")
     @PostMapping("/{diaryId}/comments")
-    public String saveComment(
+    public SimpleCommentView saveComment(
             @Parameter(description = "일기ID") @PathVariable Long diaryId,
-            @Parameter(description = "작성자") @RequestParam String author,
+            @Parameter(description = "유저ID") @RequestParam Long userId,
             @Parameter(description = "댓글 내용") @RequestParam String contents
     ) {
-        return diaryService.saveComment(diaryId, author, contents);
+        return diaryService.saveComment(diaryId, userId, contents);
     }
 
     @Operation(summary = "플레이어 일기 댓글 삭제")
     @DeleteMapping("/{diaryId}/comments/{commentId}")
-    public String deleteComment(
+    public BooleanView deleteComment(
             @Parameter(description = "일기ID") @PathVariable Long diaryId,
-            @Parameter(description = "댓글ID") @PathVariable Long commentId
+            @Parameter(description = "댓글ID") @PathVariable Long commentId,
+            @Parameter(description = "유저ID") @RequestParam Long userId
     ) {
-        return diaryService.deleteComment(diaryId, commentId);
+        Boolean result = diaryService.deleteComment(diaryId, commentId, userId);
+        return BooleanView.of(result);
     }
 
     @Operation(summary = "플레이어 일기 조회")

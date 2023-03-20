@@ -10,6 +10,7 @@ import gfhouse.matchmaker.repository.diary.DiaryLikesRepository;
 import gfhouse.matchmaker.repository.diary.DiaryRepository;
 import gfhouse.matchmaker.view.diary.CommentView;
 import gfhouse.matchmaker.view.diary.DiaryView;
+import gfhouse.matchmaker.view.diary.SimpleCommentView;
 import gfhouse.matchmaker.view.diary.SimpleDiaryView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,23 +57,43 @@ public class DiaryService {
     }
 
     @Transactional
-    public String saveComment(Long diaryId, String author, String contents) {
+    public SimpleCommentView saveComment(Long diaryId, Long userId, String contents) {
+        User user = userRepository.findById(userId).orElseThrow();
+        Diary diary = diaryRepository.findById(diaryId).orElseThrow();
+
         Comment comment = Comment.builder()
-                .author(author)
+                .userId(user.getId())
+                .author(user.getNickname())
                 .contents(contents)
                 .build();
 
-        Diary diary = diaryRepository.findById(diaryId).orElseThrow();
         diary.addComment(comment);
 
-        return "ok";
+        return SimpleCommentView.of(comment);
     }
 
     @Transactional
-    public String deleteComment(Long diaryId, Long commentId) {
-        commentRepository.deleteByDiary_IdAndId(diaryId, commentId);
+    public Boolean deleteComment(Long diaryId, Long commentId, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        Diary diary = diaryRepository.findById(diaryId).orElseThrow();
+        Comment comment = commentRepository.findById(commentId).orElseThrow();
 
-        return "ok";
+        validateComment(user, diary, comment);
+
+        commentRepository.delete(comment);
+        return true;
+    }
+
+    private void validateComment(User user, Diary diary, Comment comment) {
+        Long diaryId = comment.getDiary().getId();
+        if (!diaryId.equals(diary.getId())) {
+            throw new IllegalArgumentException("잘못된 요청입니다.");
+        }
+
+        Long userId = comment.getUserId();
+        if (!userId.equals(user.getId())) {
+            throw new IllegalArgumentException("작성자만 댓글을 삭제할 수 있습니다.");
+        }
     }
 
     public DiaryView getDiaryView(Long diaryId,  Long userId) {
