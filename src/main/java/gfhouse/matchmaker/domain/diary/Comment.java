@@ -16,6 +16,7 @@ public class Comment extends EntityAudit {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long userId;
     private String author;
     private String contents;
 
@@ -24,7 +25,8 @@ public class Comment extends EntityAudit {
     private Diary diary;
 
     @Builder
-    public Comment(String author, String contents) {
+    public Comment(Long userId, String author, String contents) {
+        this.userId = userId;
         this.author = author;
         this.contents = contents;
     }
