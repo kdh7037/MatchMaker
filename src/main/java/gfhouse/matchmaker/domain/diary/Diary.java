@@ -19,22 +19,21 @@ public class Diary extends EntityAudit {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long userId;
+
     private String title;
     private String author;
     private String contents;
-    private Long likes;
-    private Long hates;
 
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL ,orphanRemoval = true)
     private List<Comment> comments = Collections.emptyList();
 
     @Builder
-    public Diary(String title, String author, String contents) {
+    public Diary(Long userId, String title, String author, String contents) {
+        this.userId = userId;
         this.title = title;
         this.author = author;
         this.contents = contents;
-        this.likes = 0L;
-        this.hates = 0L;
     }
 
     public void addComment(Comment comment) {
