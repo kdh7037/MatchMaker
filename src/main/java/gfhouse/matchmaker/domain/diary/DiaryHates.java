@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Table(name = "tb_diary_hates")
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
