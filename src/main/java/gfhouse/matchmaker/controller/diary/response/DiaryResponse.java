@@ -37,4 +37,10 @@ public class DiaryResponse {
 
     @Schema(description = "댓글 목록")
     private List<CommentResponse> comments = Collections.emptyList();
+
+    @Schema(description = "좋아요 여부", nullable = true)
+    private Boolean isLike;
+
+    @Schema(description = "싫어요 여부", nullable = true)
+    private Boolean isHate;
 }

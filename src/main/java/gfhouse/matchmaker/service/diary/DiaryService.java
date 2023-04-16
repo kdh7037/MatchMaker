@@ -101,11 +101,17 @@ public class DiaryService {
         }
     }
 
-    public DiaryResponse getDiaryView(Long diaryId) {
+    public DiaryResponse getDiaryView(Long diaryId, Long userId) {
         Diary diary = diaryRepository.findFetchById(diaryId).orElseThrow();
         Long likes = diaryLikesRepository.countByDiaryId(diaryId).orElse(0L);
         Long hates = diaryHatesRepository.countByDiaryId(diaryId).orElse(0L);
         List<CommentResponse> commentViews = diary.getComments().stream().map(CommentResponse::of).toList();
+        Boolean isLike = null;
+        Boolean isHate = null;
+        if (userId != null) {
+            isLike = diaryLikesRepository.existsByDiaryIdAndUserId(diaryId, userId);
+            isHate = diaryHatesRepository.existsByDiaryIdAndUserId(diaryId, userId);
+        }
 
         return DiaryResponse.builder()
                 .diaryId(diary.getId())
@@ -116,6 +122,8 @@ public class DiaryService {
                 .likes(likes)
                 .hates(hates)
                 .comments(commentViews)
+                .isLike(isLike)
+                .isHate(isHate)
                 .build();
     }
 
