@@ -1,19 +1,19 @@
 package gfhouse.matchmaker.service.diary;
 
-import gfhouse.matchmaker.domain.User;
+import gfhouse.matchmaker.domain.user.User;
 import gfhouse.matchmaker.domain.diary.Comment;
 import gfhouse.matchmaker.domain.diary.Diary;
 import gfhouse.matchmaker.domain.diary.DiaryHates;
 import gfhouse.matchmaker.domain.diary.DiaryLikes;
-import gfhouse.matchmaker.repository.UserRepository;
+import gfhouse.matchmaker.repository.user.UserRepository;
 import gfhouse.matchmaker.repository.diary.CommentRepository;
 import gfhouse.matchmaker.repository.diary.DiaryHatesRepository;
 import gfhouse.matchmaker.repository.diary.DiaryLikesRepository;
 import gfhouse.matchmaker.repository.diary.DiaryRepository;
-import gfhouse.matchmaker.view.diary.CommentView;
-import gfhouse.matchmaker.view.diary.DiaryView;
-import gfhouse.matchmaker.view.diary.SimpleCommentView;
-import gfhouse.matchmaker.view.diary.SimpleDiaryView;
+import gfhouse.matchmaker.controller.diary.response.CommentResponse;
+import gfhouse.matchmaker.controller.diary.response.DiaryResponse;
+import gfhouse.matchmaker.controller.diary.response.SimpleCommentResponse;
+import gfhouse.matchmaker.controller.diary.response.SimpleDiaryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +34,7 @@ public class DiaryService {
     private final UserRepository userRepository;
 
     @Transactional
-    public SimpleDiaryView saveDiary(Long userId, String contents, String title) {
+    public SimpleDiaryResponse saveDiary(Long userId, String contents, String title) {
         User user = userRepository.findById(userId).orElseThrow();
         Diary diary = Diary.builder()
                 .userId(user.getId())
@@ -44,7 +44,7 @@ public class DiaryService {
                 .build();
 
         Diary saved = diaryRepository.save(diary);
-        return SimpleDiaryView.of(saved);
+        return SimpleDiaryResponse.of(saved);
     }
 
     @Transactional
@@ -62,7 +62,7 @@ public class DiaryService {
     }
 
     @Transactional
-    public SimpleCommentView saveComment(Long diaryId, Long userId, String contents) {
+    public SimpleCommentResponse saveComment(Long diaryId, Long userId, String contents) {
         User user = userRepository.findById(userId).orElseThrow();
         Diary diary = diaryRepository.findById(diaryId).orElseThrow();
 
@@ -74,7 +74,7 @@ public class DiaryService {
 
         diary.addComment(comment);
 
-        return SimpleCommentView.of(comment);
+        return SimpleCommentResponse.of(comment);
     }
 
     @Transactional
@@ -101,13 +101,13 @@ public class DiaryService {
         }
     }
 
-    public DiaryView getDiaryView(Long diaryId) {
+    public DiaryResponse getDiaryView(Long diaryId) {
         Diary diary = diaryRepository.findFetchById(diaryId).orElseThrow();
         Long likes = diaryLikesRepository.countByDiaryId(diaryId).orElse(0L);
         Long hates = diaryHatesRepository.countByDiaryId(diaryId).orElse(0L);
-        List<CommentView> commentViews = diary.getComments().stream().map(CommentView::of).toList();
+        List<CommentResponse> commentViews = diary.getComments().stream().map(CommentResponse::of).toList();
 
-        return DiaryView.builder()
+        return DiaryResponse.builder()
                 .diaryId(diary.getId())
                 .author(diary.getAuthor())
                 .title(diary.getTitle())
@@ -144,7 +144,7 @@ public class DiaryService {
         return true;
     }
 
-    public Page<SimpleDiaryView> getDiaries(Integer page, Integer size) {
-        return diaryRepository.findAll(PageRequest.of(page, size)).map(SimpleDiaryView::of);
+    public Page<SimpleDiaryResponse> getDiaries(Integer page, Integer size) {
+        return diaryRepository.findAll(PageRequest.of(page, size)).map(SimpleDiaryResponse::of);
     }
 }
