@@ -121,27 +121,45 @@ public class DiaryService {
 
     @Transactional
     public boolean likeDiary(Long diaryId, Long userId) {
-        boolean isPresent = diaryLikesRepository.findByDiaryId(diaryId).isPresent();
-        if (isPresent) return false;
+        validateAlreadyLike(diaryId, userId);
+        validateSelfAction(diaryId, userId, "작성자는 좋아요 할 수 없습니다.");
 
-        DiaryLikes diaryLikes = DiaryLikes.builder()
-                .diaryId(diaryId)
-                .userId(userId)
-                .build();
-
+        DiaryLikes diaryLikes = DiaryLikes.builder().diaryId(diaryId).userId(userId).build();
         diaryLikesRepository.save(diaryLikes);
+
         return true;
+    }
+
+    private void validateAlreadyLike(Long diaryId, Long userId) {
+        Boolean likeExists = diaryLikesRepository.existsByDiaryIdAndUserId(diaryId, userId);
+        if (likeExists) {
+            throw new IllegalStateException("이미 좋아요 하였습니다.");
+        }
+    }
+
+    private void validateSelfAction(Long diaryId, Long userId, String message) {
+        Diary diary = diaryRepository.findById(diaryId).orElseThrow();
+        if (diary.getUserId().equals(userId)) {
+            throw new IllegalArgumentException(message);
+        }
     }
 
     @Transactional
     public boolean hateDiary(Long diaryId, Long userId) {
-        boolean present = diaryHatesRepository.findByDiaryId(diaryId).isPresent();
-        if (present) return false;
+        validateAlreadyHate(diaryId, userId);
+        validateSelfAction(diaryId, userId, "작성자는 싫어요 할 수 없습니다.");
 
         DiaryHates hates = DiaryHates.builder().diaryId(diaryId).userId(userId).build();
         diaryHatesRepository.save(hates);
 
         return true;
+    }
+
+    private void validateAlreadyHate(Long diaryId, Long userId) {
+        Boolean hatesExists = diaryHatesRepository.existsByDiaryIdAndUserId(diaryId, userId);
+        if (hatesExists) {
+            throw new IllegalStateException("이미 싫어요 하였습니다.");
+        }
     }
 
     public Page<SimpleDiaryResponse> getDiaries(Integer page, Integer size) {
