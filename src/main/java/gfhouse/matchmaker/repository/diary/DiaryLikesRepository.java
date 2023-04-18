@@ -9,5 +9,7 @@ public interface DiaryLikesRepository extends JpaRepository<DiaryLikes, Long> {
 
     Optional<DiaryLikes> findByDiaryId(Long diaryId);
 
+    Boolean existsByDiaryIdAndUserId(Long diaryId, Long userId);
+
     Optional<Long> countByDiaryId(Long diaryId);
 }
