@@ -10,4 +10,3 @@ import java.util.List;
 public class MatchSimpleResponse {
     private List<MatchSimpleInfoResponse> matchSimpleInfos;
 }
-

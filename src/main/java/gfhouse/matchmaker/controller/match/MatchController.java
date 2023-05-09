@@ -12,7 +12,10 @@ public class MatchController {
     private final MatchSimpleService matchSimpleService;
 
     @GetMapping("/simple")
-    public MatchSimpleResponse getSimplematchInformation(){
+    public MatchSimpleResponse (){
         return matchSimpleService.getAllMatchInformation();
-    }
+    }getSimplematchInformation
+
+    @GetMapping("/")
+    public MatchDetailResponse
 }

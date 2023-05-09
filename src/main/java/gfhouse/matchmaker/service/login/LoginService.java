@@ -21,4 +21,4 @@ public class LoginService {
         loginResponse.setResult(user.getPassword().equals(password));
         return loginResponse;
     }
-}
+}.0

@@ -10,7 +10,6 @@ public class SignupResponse {
     private Long id;
     private String userId;
     private String nickname;
-    private String password;
     private String email;
 
     public static SignupResponse of(SignupRequest signupRequest) {
@@ -18,7 +17,6 @@ public class SignupResponse {
         signupResponse.setId(signupRequest.getId());
         signupResponse.setUserId(signupRequest.getUserId());
         signupResponse.setNickname(signupRequest.getNickname());
-        signupResponse.setPassword(signupRequest.getPassword());
         signupResponse.setEmail(signupRequest.getEmail());
 
         return signupResponse;
